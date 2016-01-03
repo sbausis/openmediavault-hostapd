@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# @license   http://www.gnu.org/licenses/gpl.html GPL Version 3
+# @author    Simon Baur <sbausis@gmx.net>
+# @copyright Copyright (c) 2015 Simon Baur
+#
+# This file is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+#
+# This file is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this file. If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+. /etc/default/openmediavault
+. /usr/share/openmediavault/scripts/helper-functions
+
+# Enable/disable service
+if [ "$(omv_config_get "//services/hostapd/enable")" != "1" ]; then
+	rm -f /etc/hostapd.conf
+	exit 0
+fi
+
+# Do some cool Stuff
+
+INTERFACE="wlan0"
+BRIDGE="br0"
+SSID="openmediavault"
+COUNTRY_CODE="CH"
+HW_MODE="g"
+CHANNEL="7"
+AUTH_ALGS="3"
+HT_CAPAB="[HT40+]"
+WPA="2"
+WPA_PASS="openmediavault"
+WPA_KEY_MGMT="WPA-PSK"
+RSN_PAIRWISE="CCMP"
+RSN_PREAUTH="${INTERFACE}"
+
+cp -f /usr/share/openmediavault/templates/hostapd-openmediavault-2.4g.conf /tmp/hostapd.conf
+
+sed -i -E "s/#interface=wlan0/interface=${INTERFACE}/" /tmp/hostapd.conf
+sed -i -E "s/#bridge=br0/bridge=${BRIDGE}/" /tmp/hostapd.conf
+sed -i -E "s/#ssid=openmediavault/ssid=${SSID}/" /tmp/hostapd.conf
+sed -i -E "s/#country_code=CH/country_code=${COUNTRY_CODE}/" /tmp/hostapd.conf
+sed -i -E "s/#hw_mode=g/hw_mode=${HW_MODE}/" /tmp/hostapd.conf
+sed -i -E "s/#channel=7/channel=${CHANNEL}/" /tmp/hostapd.conf
+sed -i -E "s/#auth_algs=3/auth_algs=${AUTH_ALGS}/" /tmp/hostapd.conf
+sed -i -E "s/#ht_capab=\[HT40\+\]/ht_capab=${HT_CAPAB}/" /tmp/hostapd.conf
+sed -i -E "s/#wpa=2/wpa=${WPA}/" /tmp/hostapd.conf
+sed -i -E "s/#wpa_passphrase=openmediavault/wpa_passphrase=${WPA_PASS}/" /tmp/hostapd.conf
+sed -i -E "s/#wpa_key_mgmt=WPA-PSK/wpa_key_mgmt=${WPA_KEY_MGMT}/" /tmp/hostapd.conf
+sed -i -E "s/#rsn_pairwise=CCMP/rsn_pairwise=${RSN_PAIRWISE}/" /tmp/hostapd.conf
+sed -i -E "s/#rsn_preauth_interfaces=wlan0/rsn_preauth_interfaces=${RSN_PREAUTH}/" /tmp/hostapd.conf
+
+mv -f /tmp/hostapd.conf /etc/hostapd.conf
+
+exit 0

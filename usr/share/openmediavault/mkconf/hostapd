@@ -30,18 +30,21 @@ fi
 
 # Do some cool Stuff
 
-INTERFACE="wlan0"
-BRIDGE="br0"
-SSID="openmediavault"
-COUNTRY_CODE="CH"
-HW_MODE="g"
-CHANNEL="7"
-AUTH_ALGS="3"
-HT_CAPAB="[HT40+]"
-WPA="2"
-WPA_PASS="openmediavault"
-WPA_KEY_MGMT="WPA-PSK"
-RSN_PAIRWISE="CCMP"
+OMV_CONFIG_SSID=$(omv_config_get "//services/hostapd/ssid" | sed -e 's/\s*,\s*/,/g');
+OMV_CONFIG_PASSPHRASE=$(omv_config_get "//services/hostapd/passphrase" | sed -e 's/\s*,\s*/,/g');
+
+INTERFACE=${OMV_CONFIG_INTERFACE-"wlan0"}
+BRIDGE=${OMV_CONFIG_BRIDGE-"br0"}
+SSID=${OMV_CONFIG_SSID-"openmediavault"}
+COUNTRY_CODE=${OMV_CONFIG_COUNTRY_CODE-"CH"}
+HW_MODE=${OMV_CONFIG_HW_MODE-"g"}
+CHANNEL=${OMV_CONFIG_CHANNEL-"7"}
+AUTH_ALGS=${OMV_CONFIG_AUTH_ALGS-"3"}
+HT_CAPAB=${OMV_CONFIG_HT_CAPAB-"[HT40+]"}
+WPA=${OMV_CONFIG_WPA-"2"}
+WPA_PASS=${OMV_CONFIG_WPA_PASS-"openmediavault"}
+WPA_KEY_MGMT=${OMV_CONFIG_WPA_KEY_MGMT-"WPA-PSK"}
+RSN_PAIRWISE=${OMV_CONFIG_RSN_PAIRWISE-"CCMP"}
 RSN_PREAUTH="${INTERFACE}"
 
 cp -f /usr/share/openmediavault/templates/hostapd-openmediavault-2.4g.conf /tmp/hostapd.conf

@@ -86,6 +86,23 @@ Ext.define("OMV.module.admin.service.hostapd.Settings", {
 	                labelSeparator : ""
 	            },
 	            items    : [
+					{
+		                xtype      : "textfield",
+		                name       : "ssid",
+		                fieldLabel : _("SSID"),
+		                allowBlank : false,
+		                //value      : "local",
+		                //plugins    : [{
+		                //    ptype : "fieldinfo",
+		                //    text  : _("Configures local DNS entries to contain the domain name above. Also sets the domain for DHCP clients.")
+		                //}]
+		            },
+					{
+						xtype: "passwordfield",
+						name: "passphrase",
+						fieldLabel: _("Passphrase"),
+						allowBlank: false
+					},
 					/*{
 		                xtype         : "combo",
 		                name          : "public-if",

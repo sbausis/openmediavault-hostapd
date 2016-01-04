@@ -63,7 +63,9 @@ class OMVRpcServiceHostapd extends OMVRpcServiceAbstract {
             throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED, $xpath);
 
         // Modify the result object.
-        $object['enable']          = boolval($object['enable']);
+        $object['enable'] 		= boolval($object['enable']);
+        $object['ssid'] 		= $object['ssid'];
+        $object['passphrase'] 	= $object['passphrase'];
 
         // Remove useless fields from the result object.
         //unset($object['ddd']);
@@ -89,7 +91,9 @@ class OMVRpcServiceHostapd extends OMVRpcServiceAbstract {
         $this->validateMethodParams($params, '{
             "type"       : "object",
             "properties" : {
-                "enable"             : { "type" : "boolean" }
+                "enable" 		: { "type" : "boolean" },
+				"ssid" 			: { "type" : "string" },
+				"passphrase" 	: { "type" : "string" }
             }
         }');
 
@@ -99,12 +103,11 @@ class OMVRpcServiceHostapd extends OMVRpcServiceAbstract {
         if(is_null($oldObject))
             throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED, $xpath);
 
-		//$pub = explode(" ", $params['public-if']);
-		//$priv = explode(" ", $params['private-if']);
-		
         // Update the configuration object.
         $object = array(
-            "enable" 	=> array_boolval($params, 'enable'),
+            "enable" 		=> array_boolval($params, 'enable'),
+			"ssid" 			=> $params['ssid'],
+			"passphrase" 	=> $params['passphrase'],
         );
 
         if(FALSE === $xmlConfig->replace("//services/hostapd", $object))

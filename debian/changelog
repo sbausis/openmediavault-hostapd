@@ -1,3 +1,9 @@
+openmediavault-hostapd (0.0.3) unstable; urgency=low
+
+  * SSID/PASSPHRASE in UI
+
+ -- Simon Baur <sbausis@gmx.net>  Mon, 04 Jan 2016 01:23:00 +0100
+
 openmediavault-hostapd (0.0.2) unstable; urgency=low
 
   * default config for 2.4g.

@@ -65,6 +65,6 @@ sed -i -E "s/#rsn_preauth_interfaces=wlan0/rsn_preauth_interfaces=${RSN_PREAUTH}
 
 mv -f /tmp/hostapd.conf /etc/hostapd.conf
 
-sed -i -E "s/#DAEMON_CONF=\"\"/DAEMON_CONF=\"/etc/hostapd.conf\"/" /etc/default/hostapd
+sed -i -E "s|#DAEMON_CONF=\"\"|DAEMON_CONF=\"/etc/hostapd.conf\"|" /etc/default/hostapd
 
 exit 0

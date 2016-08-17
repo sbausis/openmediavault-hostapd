@@ -31,7 +31,7 @@ fi
 # Do some cool Stuff
 
 OMV_CONFIG_SSID=$(omv_config_get "//services/hostapd/ssid" | sed -e 's/\s*,\s*/,/g');
-OMV_CONFIG_PASSPHRASE=$(omv_config_get "//services/hostapd/passphrase" | sed -e 's/\s*,\s*/,/g');
+OMV_CONFIG_WPA_PASS=$(omv_config_get "//services/hostapd/passphrase" | sed -e 's/\s*,\s*/,/g');
 
 INTERFACE=${OMV_CONFIG_INTERFACE-"wlan0"}
 BRIDGE=${OMV_CONFIG_BRIDGE-"br0"}

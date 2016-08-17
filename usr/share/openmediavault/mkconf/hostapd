@@ -18,6 +18,7 @@
 # along with this file. If not, see <http://www.gnu.org/licenses/>.
 
 set -e
+set -x
 
 . /etc/default/openmediavault
 . /usr/share/openmediavault/scripts/helper-functions
@@ -33,7 +34,7 @@ fi
 OMV_CONFIG_SSID=$(omv_config_get "//services/hostapd/ssid" | sed -e 's/\s*,\s*/,/g');
 OMV_CONFIG_PASSPHRASE=$(omv_config_get "//services/hostapd/passphrase" | sed -e 's/\s*,\s*/,/g');
 OMV_CONFIG_PASSPHRASE=${OMV_CONFIG_PASSPHRASE-"openmediavault"}
-OMV_CONFIG_WPA_PASS=$(echo ${OMV_CONFIG_PASSPHRASE} | wpa_passphrase ${OMV_CONFIG_SSID})
+OMV_CONFIG_WPA_PASS=$(echo ${OMV_CONFIG_PASSPHRASE} | wpa_passphrase ${OMV_CONFIG_SSID} | grep "psk=" | grep -v "#" | sed 's/.*psk=//')
 
 INTERFACE=${OMV_CONFIG_INTERFACE-"wlan0"}
 BRIDGE=${OMV_CONFIG_BRIDGE-"br0"}
@@ -60,7 +61,7 @@ sed -i -E "s/#channel=7/channel=${CHANNEL}/" /tmp/hostapd.conf
 sed -i -E "s/#auth_algs=3/auth_algs=${AUTH_ALGS}/" /tmp/hostapd.conf
 sed -i -E "s/#ht_capab=\[HT40\+\]/ht_capab=${HT_CAPAB}/" /tmp/hostapd.conf
 sed -i -E "s/#wpa=2/wpa=${WPA}/" /tmp/hostapd.conf
-sed -i -E "s/#wpa_psk=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef/#wpa_psk=${WPA_PASS}/" /tmp/hostapd.conf
+sed -i -E "s/#wpa_psk=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef/wpa_psk=${WPA_PASS}/" /tmp/hostapd.conf
 sed -i -E "s/#wpa_key_mgmt=WPA-PSK/wpa_key_mgmt=${WPA_KEY_MGMT}/" /tmp/hostapd.conf
 sed -i -E "s/#rsn_pairwise=CCMP/rsn_pairwise=${RSN_PAIRWISE}/" /tmp/hostapd.conf
 sed -i -E "s/#rsn_preauth_interfaces=wlan0/rsn_preauth_interfaces=${RSN_PREAUTH}/" /tmp/hostapd.conf
